@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,23 @@
   "bugs": {
     "url": "https://github.com/1578536879/date/issues"
   },
-  "homepage": "https://github.com/1578536879/date#readme"
+  "homepage": "https://github.com/1578536879/date#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "jest": "^26.4.2",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "dependencies": {
+    "jest": "^26.4.2",
+    "jest-cli": "^26.4.2"
+  },
+  "jest": {
+    "bail": true,
+    "verbose": true,
+    "displayName": {
+      "name": "Day",
+      "color": "blue"
+    }
+  }
 }

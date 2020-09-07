@@ -14,11 +14,20 @@ let dayToWeek = function(data){
     let month = parseInt(data.substr(index1 + 1, index2 - 1))
     let day = parseInt(data.substr(index2 + 1, data.length - 1))
     let days = common.yearDay(year, month, day)
-    let startDay = new Date(`${year}-1-1`).getDay() - 1
-    days -= startDay
-    let week = 1
+    if(days === -1 || !year || !month || !day){
+        return -1
+    }
+    let week = 0
+    let startDay = new Date(`${year}-1-1`).getDay()
+    if(startDay !== 1){
+        week += 1
+    }
+    // startDay -= 1
+    days -= (7 - startDay + 1)
     week += parseInt(days / 7)
-    week += parseInt(days % 7)
+    if(parseInt(days % 7) !== 0){
+        week ++
+    }
     return week
 }
 
@@ -31,8 +40,10 @@ let weekToDay = function(data){
     let year = parseInt(data)
     let index = data.indexOf('-')
     let week = parseInt(data.substr(index + 1, data.length - 1))
+    if(week < 0 || week > year / 7 || !year || !week){
+        return -1
+    }
     let startDay = new Date(`${year}-1-1`).getDay() - 1
-    console.log(startDay)
     let lastDay
     let month
     if(week * 7 < 31){
@@ -61,14 +72,14 @@ let weekToDay = function(data){
     let result = []
     lastDay = new Date(lastDay)
     day = new Date(lastDay)
-    result.unshift(day)
-    console.log(result)
+    result.push(day.getTime())
+    if(isNaN(day.getTime())){
+        return -1
+    }
     for(let i = 1; i < 7; i++){
         day = lastDay.setDate(lastDay.getDate() - 1)
-        console.log(i, result)
-        result.unshift(new Date(day))
+        result.unshift(new Date(day).getTime())
     }
-
     return result
 }
 
@@ -83,6 +94,9 @@ let monthWeek = function(data){
     let index2 = data.lastIndexOf('-')
     let month = parseInt(data.substr(index1 + 1, index2 - 1))
     let day = parseInt(data.substr(index2 + 1, data.length - 1)) 
+    if(month < 1 || month > 12 || !year || !month || !day){
+        return -1
+    }
     let startDay = new Date(`${year}-${month}-1`).getDay() - 1
     let week 
     if(day <= 7 - startDay){
@@ -98,12 +112,15 @@ let monthWeek = function(data){
         month -= 1
     }else{
         let days = common.judgeLeap(year, month).month
-        days -= (7 - startDay)
-        days += 1
-        if(days % 7 !== 0){
-            week = parseInt(days / 7) + 1
+        if(days < day){
+            return -1
+        }
+        day -= (7 - startDay)
+        day += 1
+        if(day % 7 !== 0){
+            week = parseInt(day / 7) + 1
         }else{
-            week = parseInt(days / 7)
+            week = parseInt(day / 7)
         }
     }
     return {
@@ -121,22 +138,25 @@ let monthToWeek = function(data){
     let year = parseInt(data)
     let index = data.indexOf('-')
     let month = parseInt(data.substr(index + 1, data.length- 1))
+    if(!month || !year || month > 12 || month < 1){
+        return -1
+    }
     let startDay = new Date(`${year}-${month}-1 8:0:0`).getDay() - 1
     let days = common.judgeLeap(year, month).month
     let day = new Date(`${year}-${month}-1 8:0:0`)
     let startWeekDay = new Date(`${year}-${month}-1 8:0:0`)
     let week = []
-    week.push(startWeekDay)
+    week.push(startWeekDay.getTime())
     startWeekDay = day.setDate(day.getDate() + (7 - startDay))
-    week.push(new Date(startWeekDay))
+    week.push(new Date(startWeekDay).getTime())
     days = days - (7 - startDay) - 7
     for(let i = 0; i < parseInt(days / 7); i++) {
         startWeekDay = day.setDate(day.getDate() + 7)
-        week.push(new Date(startWeekDay))
+        week.push(new Date(startWeekDay).getTime())
     }
     if(parseInt(days % 7) !== 0){
         startWeekDay = day.setDate(day.getDate() + 7)
-        week.push(new Date(startWeekDay))    
+        week.push(new Date(startWeekDay).getTime())    
     }
     return week
 }

@@ -1,6 +1,6 @@
 const YAER_MONTH = {
     leap: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-    nonleap: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+    nonleap: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 }
 
 const YEAR_DAY = {
@@ -16,14 +16,16 @@ const YEAR_DAY = {
  */
 let judgeLeap = function(year, month = 0){
     let flag
-    if(parseInt(year % 400) === 0 || (parseInt(year % 4) === 0 && parseInt(year % 100) === 0)){
+    if(parseInt(year % 400) === 0 || (parseInt(year % 4) === 0 && parseInt(year % 100) !== 0)){
         flag = 'leap'
     }else{
         flag = 'nonleap'
     }
     let monthDay = YAER_MONTH[flag][month - 1]
     let yearDay = YEAR_DAY[flag]
-
+    if(month > 12 || month < 0){
+        monthDay = 0
+    }
     return {
         leap: flag === 'leap' ? true : false,
         month: monthDay,
@@ -40,6 +42,12 @@ let judgeLeap = function(year, month = 0){
  */
 let yearDay = function(year, month, day){
     let flag = judgeLeap(year, month).leap ? 'leap' : 'nonleap'
+    if(month > 12 || month < 1){
+        return -1
+    }
+    if(YAER_MONTH[flag][month - 1] < day){
+        return -1
+    }
     let days = 0
     for(let i = 0; i < month - 1; i ++){
         days += YAER_MONTH[flag][i]
