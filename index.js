@@ -7,5 +7,6 @@ module.exports = {
     dayToWeek: week.dayToWeek,
     yearToDay: day.yearToDay,
     separateDays: day.separateDays,
-    monthDays: day.monthDays
+    monthDays: day.monthDays,
+    afterDay: day.afterDay
 }

@@ -126,8 +126,24 @@ let yearToDay = function(data){
     return res
 }
 
+/**
+ * 获取某天间隔多少天之后的日期
+ * @param {String} day 年-月-日
+ * @param {Number} separateDay 间隔日期
+ * @returns {Number} 日期时间戳
+ */
+let afterDay = function(day, separateDay){
+    day = new Date(day)
+    let data = day.setDate(day.getDate() + parseInt(separateDay))
+    if(isNaN(data)){
+        data = -1
+    }
+    return data
+}
+
 module.exports = {
     yearToDay: yearToDay,
     separateDays: separateDays,
-    monthDays: monthDays
+    monthDays: monthDays,
+    afterDay: afterDay
 }
